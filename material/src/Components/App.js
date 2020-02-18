@@ -13,27 +13,33 @@ class App extends Component{
 	}
 
 getExercisesByMuscles(){
-	return Object.entries( this.state.exercises.reduce((exercises, exercise) =>{
+	const initExercises = muscles.reduce((exercises, category) =>({
+		...exercises,
+		[category]:[]
+	}), {})
+console.log(muscles, initExercises)
+
+	return Object.entries( 
+		this.state.exercises.reduce((exercises, exercise) =>{
 			const { muscles } = exercise
 
-			exercises[muscles] = exercises[muscles]
-			?[...exercises[muscles], exercise]
-			:[exercise]
+			exercises[muscles] =[...exercises[muscles], exercise]
+			
 
 			return exercises
-	},{})
+	},initExercises)
 	)  
 }
 
-handleCategorySelected = category =>{
+handleCategorySelect = category =>{
 	this.setState({
 		category
 	})
 
 }
 
-handleExerciseSelected = id =>  {
-	this.setState(({exercises}) => ({
+handleExerciseSelect = id =>  {
+	this.setState( ({exercises}) => ({
 
 			exercise:exercises.find(ex => ex.id == id)
 	}))
@@ -42,6 +48,22 @@ handleExerciseSelected = id =>  {
 	
 	}
 
+handleExerciseCreate = exercise =>{
+	this.setState(({exercises}) => ({
+		exercises:[ 
+		...exercises,
+		exercise
+		]
+	}))
+
+}
+
+handleExerciseDelete = id =>{
+	this.setState(({exercises}) =>({
+
+		exercises:exercises.filter(ex => ex.id !== id)
+	}) )
+}
 
 
 render(){
@@ -50,21 +72,24 @@ render(){
 	return (
 	 <Fragment>
 
-			<Header />
+			<Header 
+			muscles={muscles}
+			onExerciseCreate={this.handleExerciseCreate}
+			/>
 			<Exercises 
 
 			exercises = {exercises}
 			category = {category}
 			exercise = {exercise}
-			onSelect = {this.handleExerciseSelected}
-			
+			onSelect = {this.handleExerciseSelect}
+			onDelete={this.handleExerciseDelete}
 
 			/>
 
 			<Footer 
 			category ={category}
 			muscles ={muscles}
-			onSelect={this.handleCategorySelected}
+			onSelect={this.handleCategorySelect}
 			/>
 
 
