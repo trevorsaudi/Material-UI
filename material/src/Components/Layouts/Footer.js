@@ -1,12 +1,9 @@
 import React from 'react'
 import {Paper, Tabs, Tab} from '@material-ui/core';
 
-
-
 export default ({muscles,category, onSelect}) =>{
 
-const index = category
-? muscles.findIndex(group =>group === category) + 1
+const index = category ? muscles.findIndex(group =>group === category) + 1
 :0
 
 
@@ -19,6 +16,7 @@ return <Paper>
     indicatorColor="primary"
     textColor="primary"
     centered
+    variant="scrollable"
   >
   <Tab label="All" />
 
